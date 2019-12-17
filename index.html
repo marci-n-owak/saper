@@ -35,12 +35,14 @@
                 messagesOnStart();
             }
             function restartDivButton(){
-                removeElement(iloscKwadratow);
-                createArray();
-                createTable();
-                bombs(iloscBomb);
-                document.getElementById("winmessage").hidden = true;
-                document.getElementById("losemessage").hidden = true;
+                for(let i = 0; i < 3; i++){
+                    removeElement(iloscKwadratow);
+                    createArray();
+                    createTable();
+                    bombs(iloscBomb);
+                    document.getElementById("winmessage").hidden = true;
+                    document.getElementById("losemessage").hidden = true;
+                }
             }
             //Sprawdzanie przycisku
             function buttonCheck(event, x, y){
