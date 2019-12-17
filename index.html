@@ -7,15 +7,33 @@
         <title>Saper</title>
     </head>
     <body oncontextmenu="return false">
-        <div class="speaker" onclick="musicOnOff()"><img id="musicIcon" src="images/musicon.png"></div>
-        <input class="restart" type="button" value="Restart" id="restartButton" onclick="removeElement(iloscKwadratow);createArray();createTable();bombs(iloscBomb);" hidden>
-        <div class="tabelka" id="tabelka"></div>
+        <div class="menu">
+            <input class="restart" type="button" value="Restart" id="restartButton" onclick="removeElement(iloscKwadratow);createArray();createTable();bombs(iloscBomb);">
+            <div class="speaker" onclick="musicOnOff()"><img id="musicIcon" src="images/musicon.png"></div>
+            <div class="tabelka" id="tabelka"></div>
+        </div>
         <script>
-            let message1 = prompt("Podaj promień tworzenia kwadartów:", "10");
-            let message2 = prompt("Podaj liczbę bomb:", "10");
-            let iloscKwadratow = parseInt(message1);
-            let iloscBomb = parseInt(message2);
+            let message1 = ""
+            let message2 = ""
+            let iloscKwadratow = 0;
+            let iloscBomb = 0;
 
+            function messagesOnStart(){
+                message1 = prompt("Podaj promień tworzenia pól (max 20):", "10");
+                message2 = prompt("Podaj liczbę bomb:", "10");
+                iloscKwadratow = parseInt(message1);
+                iloscBomb = parseInt(message2);
+            }
+            messagesOnStart();
+            if(iloscKwadratow >= 20){
+                alert("Za duża liczba promienia pól");
+                messagesOnStart();
+            }
+            if(iloscBomb > (iloscKwadratow * iloscKwadratow)){
+                alert("Nie można wygenerować więcej bomb niż pól");
+                messagesOnStart();
+            }
+            
             //Sprawdzanie przycisku
             function buttonCheck(event, x, y){
                 if(event.button == 2){
@@ -98,7 +116,7 @@
 
                     let doc = document.getElementById("cell" + x + y);
 
-                    if(doc.className == "divTableCell noBomb isBomb" || doc.className == "divTableCell noBomb" || doc.className == "divTableCell"){
+                    if(doc.className == "divTableCell noBomb isBomb" || doc.className == "divTableCell noBomb" || doc.className == "divTableCell" || doc.className == "divTableCell isBomb noBomb"){
                         doc.setAttribute("class", "divTableCell isBomb");
                     }
                     
@@ -203,7 +221,6 @@
 
                 if(document.getElementById("cell" + x + y).className == "divTableCell noBomb" || document.getElementById("cell" + x + y).className == "divTableCell"){
                     document.getElementById("cell" + x + y).setAttribute("class", "divTableCell noBomb");
-
                 }
 
                 if(something.length >= ((iloscKwadratow*iloscKwadratow) - iloscKwadratow)){
@@ -211,7 +228,7 @@
                     for(let i = 0; i < iloscKwadratow; i++){
                         everyBomb[i].setAttribute("style", "background-image: url(images/noboom.png); background-repeat: no-repeat; background-size: cover;")
                     }
-                    alert("Zwycięstwo!");
+                    //alert("Zwycięstwo!");
                     document.getElementById("restartButton").hidden = false;
                 }
 
