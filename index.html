@@ -8,10 +8,11 @@
     </head>
     <body oncontextmenu="return false">
         <div class="menu">
-            <input class="restart" type="button" value="Restart" id="restartButton" onclick="removeElement(iloscKwadratow);createArray();createTable();bombs(iloscBomb);">
+            <input class="restart" type="button" value="Restart" id="restartButton" onclick="restartDivButton()">
             <div class="speaker" onclick="musicOnOff()"><img id="musicIcon" src="images/musicon.png"></div>
-            <div class="tabelka" id="tabelka"></div>
         </div>
+        <div class="winmessage" id="winmessage" hidden>Zwycięstwo!</div>
+        <div class="losemessage" id="losemessage" hidden>Porażka :c</div>
         <script>
             let message1 = ""
             let message2 = ""
@@ -33,7 +34,14 @@
                 alert("Nie można wygenerować więcej bomb niż pól");
                 messagesOnStart();
             }
-            
+            function restartDivButton(){
+                removeElement(iloscKwadratow);
+                createArray();
+                createTable();
+                bombs(iloscBomb);
+                document.getElementById("winmessage").hidden = true;
+                document.getElementById("losemessage").hidden = true;
+            }
             //Sprawdzanie przycisku
             function buttonCheck(event, x, y){
                 if(event.button == 2){
@@ -225,11 +233,11 @@
 
                 if(something.length >= ((iloscKwadratow*iloscKwadratow) - iloscKwadratow)){
                     let everyBomb = document.getElementsByClassName("divTableCell isBomb");
-                    for(let i = 0; i < iloscKwadratow; i++){
+                    for(let i = 0; i < iloscBomb; i++){
                         everyBomb[i].setAttribute("style", "background-image: url(images/noboom.png); background-repeat: no-repeat; background-size: cover;")
                     }
                     //alert("Zwycięstwo!");
-                    document.getElementById("restartButton").hidden = false;
+                    document.getElementById("winmessage").hidden = false;
                 }
 
                 if(table[x][y] == -1){
@@ -245,8 +253,12 @@
                         everyBomb[i].setAttribute("style", "background-image: url(images/boom.gif); background-repeat: no-repeat; background-size: cover;")
                     }
                     //alert("Porażka :c");
-                    document.getElementById("restartButton").hidden = false;
-
+                    document.getElementById("losemessage").hidden = false;
+                    setTimeout(function(){
+                        for(let i = 0; i < iloscBomb; i++){
+                            everyBomb[i].setAttribute("style", "background-image: url(images/smoke.gif); background-repeat: no-repeat; background-size: cover;")
+                        }
+                    }, 2000);
                 }
                 if(table[x][y] > 0){
                     let numberOfMines = table[x][y];

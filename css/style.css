@@ -3,7 +3,8 @@
 	height: 5vh;
 	width: 5vh;
 	cursor: pointer;
-	border: 1px solid black;
+	/*border: 1px solid black;*/
+	margin: 0.1vh;
 }
 .divTableRow {
 	display: table-row;
@@ -28,7 +29,7 @@
 }
 .restart{
   position: relative;
-  background-color: #4CAF50;
+  background-color: #00b1ff;
   border: none;
   font-size: 4vh;
   color: #FFFFFF;
@@ -44,6 +45,20 @@
   cursor: pointer;
 }
 .restart:hover{
-	background-color: #479701;
+	background-color: #0087d5;
+}
+.winmessage{
+	text-align: center;
+	font-size: 7vh;
+	padding-bottom: 2vh;
+	font-family: OCR A Std, monospace;
+	color: green;
+}
+.losemessage{
+	text-align: center;
+	font-size: 7vh;
+	padding-bottom: 2vh;
+	font-family: OCR A Std, monospace;
+	color: red;
 }
 
