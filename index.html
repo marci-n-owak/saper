@@ -1,0 +1,329 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="icon" href="images/mine.png">
+        <title>Saper</title>
+    </head>
+    <body oncontextmenu="return false">
+        <div class="speaker" onclick="musicOnOff()"><img id="musicIcon" src="images/musicon.png"></div>
+        <input class="restart" type="button" value="Restart" id="restartButton" onclick="removeElement(iloscKwadratow);createArray();createTable();bombs(iloscBomb);" hidden>
+        <div class="tabelka" id="tabelka"></div>
+        <script>
+            let message1 = prompt("Podaj promień tworzenia kwadartów:", "10");
+            let message2 = prompt("Podaj liczbę bomb:", "10");
+            let iloscKwadratow = parseInt(message1);
+            let iloscBomb = parseInt(message2);
+
+            //Sprawdzanie przycisku
+            function buttonCheck(event, x, y){
+                if(event.button == 2){
+                    //alert("You pressed button: prawy");
+                    let flag = document.getElementById("cell" + x + y);
+                    let audio = new Audio("audio/stick.mp3");
+                    if(flag.getAttribute("style") == "background-image: url(images/flag.gif); background-repeat: no-repeat; background-size: cover;"){
+                        flag.setAttribute("style", "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;");
+                        if(musicCheck % 2 == 0){
+                            audio.play();
+                        }
+                    }
+                    else{
+                        flag.setAttribute("style", "background-image: url(images/flag.gif); background-repeat: no-repeat; background-size: cover;");
+                        if(musicCheck % 2 == 0){
+                            audio.play();
+                        }
+                    }
+                }
+            }
+            //Tworzenie tabeli w Arrayce
+            //let iloscKwadratow = 10;
+            //let iloscBomb = 20;
+            let table = new Array(iloscKwadratow); 
+            
+            function createArray(){  
+                for (let i = 0; i < table.length; i++){ 
+                    table[i] = new Array(iloscKwadratow); 
+                } 
+                for (let i = 0; i < iloscKwadratow; i++){ 
+                    for (let j = 0; j < iloscKwadratow; j++){ 
+                        table[i][j] = 0; 
+                    } 
+                } 
+            }  
+            createArray();
+            //Tworzenie widzialnej tabeli
+            function createTable(){
+                for(let i = 0; i < iloscKwadratow; i++){
+                    let tableCellAbove = document.createElement("div");
+                    tableCellAbove.setAttribute("class", "divTableRow");
+
+                    let help = document.getElementById("div");
+                    let tableRow = document.body.insertBefore(tableCellAbove, help);
+                    tableRow.setAttribute("id", ("tableRowNumber" + i));
+
+                    for(let j = 0; j < iloscKwadratow; j++){
+                        let cell = document.createElement("div");
+                        cell.setAttribute("class", "divTableCell");
+                        cell.setAttribute("id", ("cell" + i + j));
+                        cell.setAttribute("style", "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;");
+                        cell.setAttribute("onclick", ("checkClick(" + i + ", " + j + ")"));
+                        cell.setAttribute("onmousedown", ("buttonCheck(event," + i + ", " + j + ")"));
+
+                        tableRow.appendChild(cell);
+                    }
+                }
+            }
+            createTable();
+
+
+            //Pętla na ilość generowanych bomb
+            function bombs(iloscBomb){
+                for (let i = 0; i < iloscBomb; i++) {
+                    generate();
+                }
+            }
+            bombs(iloscBomb);
+
+            //Generowanie bomb 
+            function generate(){
+                let x = Math.floor(Math.random() * iloscKwadratow) + 0;
+                let y = Math.floor(Math.random() * iloscKwadratow) + 0;
+
+                if(table[x][y] == -1){
+                    generate();
+                }
+                else{
+                    table[x][y] = -1;
+
+                    let doc = document.getElementById("cell" + x + y);
+
+                    if(doc.className == "divTableCell noBomb isBomb" || doc.className == "divTableCell noBomb" || doc.className == "divTableCell"){
+                        doc.setAttribute("class", "divTableCell isBomb");
+                    }
+                    
+                    numbers(x, y);
+                }          
+            }
+
+            //Tworzenie liczb wokół bomb
+            function numbers(x, y){
+                //z lewej strony           
+                if((y>0) && (table[x][y-1] != -1)){
+                    table[x][y-1] += 1;
+
+                    let doc = document.getElementById("cell" + x + (y-1));
+                }
+                //z lewej górnej strony
+                if((y>0) && (x>0) && (table[x-1][y-1] != -1)){
+                    table[x-1][y-1] += 1;
+
+                    let doc = document.getElementById("cell" + (x-1) + (y-1));
+                }
+                //z prawej górnej strony
+                if((y<(iloscKwadratow-1)) && (x>0) && (table[x-1][y+1] != -1)){
+                    table[x-1][y+1] += 1;
+
+                    let doc = document.getElementById("cell" + (x-1) + (y+1));
+                }
+                //z prawej strony
+                if((y<(iloscKwadratow-1)) && (table[x][y+1] != -1)){
+                    table[x][y+1] += 1;
+
+                    let doc = document.getElementById("cell" + x + (y+1));
+                }
+                //z góry
+                if((x<(iloscKwadratow-1)) && (table[x+1][y] != -1)){
+                    table[x+1][y] += 1;
+
+                    let doc = document.getElementById("cell" + (x+1) + (y));
+                }
+                //z dołu
+                if((x>0) && (table[x-1][y] != -1)){
+                    table[x-1][y] += 1;
+
+                    let doc = document.getElementById("cell" + (x-1) + (y));
+                }
+                //z lewej dolnej strony
+                if((y>0) && (x<(iloscKwadratow-1)) && (table[x+1][y-1] != -1)){
+                    table[x+1][y-1] += 1;
+
+                    let doc = document.getElementById("cell" + (x+1) + (y-1));
+                }
+                //z prawej dolnej strony
+                if((y<(iloscKwadratow-1)) && (x<(iloscKwadratow-1)) && (table[x+1][y+1] != -1)){
+                    table[x+1][y+1] += 1;
+
+                    let doc = document.getElementById("cell" + (x+1) + (y+1));
+                }
+            }
+
+            function removeElement(iloscKwadratow){
+                for(let i = 0; i < iloscKwadratow; i++){
+                    let elementToDelete = document.getElementById("tableRowNumber" + i);
+                    elementToDelete.parentNode.removeChild(elementToDelete);
+                }
+            }
+            function restartGame(iloscKwadratow, x, y){
+                removeElement(iloscKwadratow);
+                createArray();
+                createTable();
+                bombs(iloscBomb);
+                checkClick(x, y);
+            }
+
+            let executed = false;
+            //Pierwsze klikniecie #do poprawy zeby się strona nie realodowała
+            function checkClick(x, y){
+                if(executed == false){
+                    if(table[x][y] != 0){
+                        restartGame(iloscKwadratow, x, y);
+                    }
+                    else{
+                        executed = true;
+                        bombCheck(x, y);
+                        let audio = new Audio("audio/check.mp3");
+                        if(musicCheck % 2 == 0 && table[x][y] != -1){
+                            audio.play();
+                        }
+                    }
+                }
+                else{
+                    executed = true;
+                    bombCheck(x, y);
+                    let audio = new Audio("audio/check.mp3");
+                    if(musicCheck % 2 == 0 && table[x][y] != -1){
+                        audio.play();
+                    }
+                }
+            }
+            //Sprawdzanie czy jest bomba i konsekwencje
+            function bombCheck(x, y){
+                let something = document.getElementsByClassName("noBomb");
+
+                if(document.getElementById("cell" + x + y).className == "divTableCell noBomb" || document.getElementById("cell" + x + y).className == "divTableCell"){
+                    document.getElementById("cell" + x + y).setAttribute("class", "divTableCell noBomb");
+
+                }
+
+                if(something.length >= ((iloscKwadratow*iloscKwadratow) - iloscKwadratow)){
+                    let everyBomb = document.getElementsByClassName("divTableCell isBomb");
+                    for(let i = 0; i < iloscKwadratow; i++){
+                        everyBomb[i].setAttribute("style", "background-image: url(images/noboom.png); background-repeat: no-repeat; background-size: cover;")
+                    }
+                    alert("Zwycięstwo!");
+                    document.getElementById("restartButton").hidden = false;
+                }
+
+                if(table[x][y] == -1){
+                    document.getElementById("cell" + x + y).setAttribute("style", "background-image: url(images/boom.gif); background-repeat: no-repeat; background-size: cover;");
+                    let everyBomb = document.getElementsByClassName("divTableCell isBomb");
+
+                    let audio = new Audio("audio/boom.mp3");
+                    if(musicCheck % 2 == 0){
+                        audio.play();
+                    }
+
+                    for(let i = 0; i < iloscBomb; i++){
+                        everyBomb[i].setAttribute("style", "background-image: url(images/boom.gif); background-repeat: no-repeat; background-size: cover;")
+                    }
+                    //alert("Porażka :c");
+                    document.getElementById("restartButton").hidden = false;
+
+                }
+                if(table[x][y] > 0){
+                    let numberOfMines = table[x][y];
+                    document.getElementById("cell" + x + y).setAttribute("style", "background-image: url(images/" + numberOfMines + ".png); background-repeat: no-repeat; background-size: cover;");
+                }
+                if(table[x][y] != -1 && document.getElementById("cell" + x + y).getAttribute("style") == "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;"){
+                    document.getElementById("cell" + x + y).setAttribute("style", "background-image: url(images/0.png); background-repeat: no-repeat; background-size: cover;");
+
+                    //z lewej strony           
+                    if((y>0)){
+                        bombCheck((x), (y-1));
+                        let doc = document.getElementById("cell" + x + (y-1));
+
+                        if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
+                            doc.classList.add("noBomb");
+                        }
+                    }
+                    //z lewej górnej strony
+                    if((y>0) && (x>0)){
+                        bombCheck((x-1), (y-1));
+                        let doc = document.getElementById("cell" + (x-1) + (y-1));
+
+                        if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
+                            doc.classList.add("noBomb");
+                        }
+                    }
+                    //z prawej górnej strony
+                    if((y<(iloscKwadratow-1)) && (x>0)){
+                        bombCheck((x-1), (y+1));
+                        let doc = document.getElementById("cell" + (x-1) + (y+1));
+
+                        if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
+                            doc.classList.add("noBomb");
+                        }
+                    }
+                    //z prawej strony
+                    if((y<(iloscKwadratow-1))){
+                        bombCheck((x), (y+1));
+                        let doc = document.getElementById("cell" + x + (y+1));
+
+                        if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
+                            doc.classList.add("noBomb");
+                        }
+                    }
+                    //z góry
+                    if((x<(iloscKwadratow-1))){
+                        bombCheck((x+1), (y));
+                        let doc = document.getElementById("cell" + (x+1) + (y));
+                        
+                        if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
+                            doc.classList.add("noBomb");
+                        }
+                    }
+                    //z dołu
+                    if((x>0)){
+                        bombCheck((x-1), (y));
+                        let doc = document.getElementById("cell" + (x-1) + (y));
+
+                        if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
+                            doc.classList.add("noBomb");
+                        }
+                    }
+                    //z lewej dolnej strony
+                    if((y>0) && (x<(iloscKwadratow-1))){
+                        bombCheck((x+1), (y-1));
+                        let doc = document.getElementById("cell" + (x+1) + (y-1));
+
+                        if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
+                            doc.classList.add("noBomb");
+                        }
+                    }
+                    //z prawej dolnej strony
+                    if((y<(iloscKwadratow-1)) && (x<(iloscKwadratow-1))){
+                        bombCheck((x+1), (y+1));
+                        let doc = document.getElementById("cell" + (x+1) + (y+1));
+
+                        if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
+                            doc.classList.add("noBomb");
+                        }
+                    }
+                }
+            }
+            let musicCheck = 0;
+            function musicOnOff(){
+                let icon = document.getElementById("musicIcon");
+                if(musicCheck % 2 == 0){
+                    icon.setAttribute("src", "images/musicoff.png");
+                    musicCheck++;
+                }
+                else{
+                    icon.setAttribute("src", "images/musicon.png");
+                    musicCheck++;
+                }
+            }
+        </script>
+    </body>
+</html>

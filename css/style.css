@@ -1,0 +1,24 @@
+.divTable{
+    display: table;
+	width: 100%;
+}
+.divTableCell{
+	display: table-cell;
+	height: 5vh;
+	width: 5vh;
+	cursor: pointer;
+	border: 1px solid black;
+}
+.divTableRow {
+	display: table-row;
+}
+#musicIcon{
+	height: 7vh;
+	width: 7vh;
+	cursor: pointer;
+	float: top;
+	clear: both;
+}
+.restart{
+	align: top;
+}
