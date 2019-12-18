@@ -13,6 +13,9 @@
 	margin-right: auto;
 	justify-content: center;
 }
+.disabledCell{
+	pointer-events: none;
+}
 .menu {
 	display: flex;
 	justify-content: center;
@@ -52,7 +55,7 @@
 	font-size: 7vh;
 	padding-bottom: 2vh;
 	font-family: OCR A Std, monospace;
-	color: green;
+	color: #FFFFFF;
 }
 .losemessage{
 	text-align: center;
@@ -62,3 +65,53 @@
 	color: red;
 }
 
+
+
+#alertBox{
+	top: 100px;
+	border: solid 2px black;
+	background-color: rgb(247, 211, 92);
+	padding: 30px;
+	border-radius: 2vh;
+	visibility: hidden;
+	margin: auto;
+	position: relative;
+	width: 50vh;
+	height: 35vh;
+	text-align: center;
+	font-size: 4vh;
+	font-family: OCR A Std, monospace;
+}
+#alertBox p{
+	margin-bottom: -1vh;
+}
+#alertConfirm{
+	width: 20vh;
+	height: auto;
+	text-align: center; 
+	cursor: pointer;
+	margin: auto;
+	font-size: 4vh;
+	position: relative;
+	background-color: #00b1ff;
+	border: none;
+	color: #FFFFFF;
+	padding-top: 1vh;
+	padding-bottom: 1vh;
+	border-radius: 2vh;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	margin-top: 2vh;
+}
+#alertConfirm:hover{
+	background-color: #0087d5;
+}
+#alertNumberId{
+	font-size: 3vh;
+}
+#alertNumberId2{
+	font-size: 3vh;
+	margin-top: 1vh;
+	margin-bottom: 1vh;
+}

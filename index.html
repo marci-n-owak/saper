@@ -9,9 +9,9 @@
     <body oncontextmenu="return false">
         <div class="menu">
             <input class="restart" type="button" value="Restart" id="restartButton" onclick="restartDivButton()">
-            <div class="speaker" onclick="musicOnOff()"><img id="musicIcon" src="images/musicon.png"></div>
+            <div class="speaker"><img id="musicIcon" src="images/musicon.png" onclick="musicOnOff()"></div>
         </div>
-        <div class="winmessage" id="winmessage" hidden>Zwycięstwo!</div>
+        <div class="winmessage" id="winmessage">Zwycięstwo!</div>
         <div class="losemessage" id="losemessage" hidden>Porażka :c</div>
         <script>
             let message1 = ""
@@ -35,20 +35,20 @@
                 messagesOnStart();
             }
             function restartDivButton(){
-                for(let i = 0; i < 3; i++){
-                    removeElement(iloscKwadratow);
-                    createArray();
-                    createTable();
-                    bombs(iloscBomb);
-                    document.getElementById("winmessage").hidden = true;
-                    document.getElementById("losemessage").hidden = true;
-                }
+                executed = false;
+                removeElement(iloscKwadratow);
+                createArray();
+                createTable();
+                bombs(iloscBomb);
+                document.getElementById("winmessage").hidden = false;
+                document.getElementById("winmessage").style.color = "#ffffff";
+                document.getElementById("losemessage").hidden = true;        
             }
             //Sprawdzanie przycisku
             function buttonCheck(event, x, y){
                 if(event.button == 2){
                     //alert("You pressed button: prawy");
-                    let flag = document.getElementById("cell" + x + y);
+                    let flag = document.getElementById("cell" + x + "x" + y);
                     let audio = new Audio("audio/stick.mp3");
                     if(flag.getAttribute("style") == "background-image: url(images/flag.gif); background-repeat: no-repeat; background-size: cover;"){
                         flag.setAttribute("style", "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;");
@@ -93,7 +93,7 @@
                     for(let j = 0; j < iloscKwadratow; j++){
                         let cell = document.createElement("div");
                         cell.setAttribute("class", "divTableCell");
-                        cell.setAttribute("id", ("cell" + i + j));
+                        cell.setAttribute("id", ("cell" + i + "x" + j));
                         cell.setAttribute("style", "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;");
                         cell.setAttribute("onclick", ("checkClick(" + i + ", " + j + ")"));
                         cell.setAttribute("onmousedown", ("buttonCheck(event," + i + ", " + j + ")"));
@@ -103,7 +103,6 @@
                 }
             }
             createTable();
-
 
             //Pętla na ilość generowanych bomb
             function bombs(iloscBomb){
@@ -124,7 +123,7 @@
                 else{
                     table[x][y] = -1;
 
-                    let doc = document.getElementById("cell" + x + y);
+                    let doc = document.getElementById("cell" + x + "x" + y);
 
                     if(doc.className == "divTableCell noBomb isBomb" || doc.className == "divTableCell noBomb" || doc.className == "divTableCell" || doc.className == "divTableCell isBomb noBomb"){
                         doc.setAttribute("class", "divTableCell isBomb");
@@ -140,49 +139,49 @@
                 if((y>0) && (table[x][y-1] != -1)){
                     table[x][y-1] += 1;
 
-                    let doc = document.getElementById("cell" + x + (y-1));
+                    let doc = document.getElementById("cell" + x + "x" + (y-1));
                 }
                 //z lewej górnej strony
                 if((y>0) && (x>0) && (table[x-1][y-1] != -1)){
                     table[x-1][y-1] += 1;
 
-                    let doc = document.getElementById("cell" + (x-1) + (y-1));
+                    let doc = document.getElementById("cell" + (x-1) + "x" + (y-1));
                 }
                 //z prawej górnej strony
                 if((y<(iloscKwadratow-1)) && (x>0) && (table[x-1][y+1] != -1)){
                     table[x-1][y+1] += 1;
 
-                    let doc = document.getElementById("cell" + (x-1) + (y+1));
+                    let doc = document.getElementById("cell" + (x-1) + "x" + (y+1));
                 }
                 //z prawej strony
                 if((y<(iloscKwadratow-1)) && (table[x][y+1] != -1)){
                     table[x][y+1] += 1;
 
-                    let doc = document.getElementById("cell" + x + (y+1));
+                    let doc = document.getElementById("cell" + x + "x" + (y+1));
                 }
                 //z góry
                 if((x<(iloscKwadratow-1)) && (table[x+1][y] != -1)){
                     table[x+1][y] += 1;
 
-                    let doc = document.getElementById("cell" + (x+1) + (y));
+                    let doc = document.getElementById("cell" + (x+1) + "x" + (y));
                 }
                 //z dołu
                 if((x>0) && (table[x-1][y] != -1)){
                     table[x-1][y] += 1;
 
-                    let doc = document.getElementById("cell" + (x-1) + (y));
+                    let doc = document.getElementById("cell" + (x-1) + "x" + (y));
                 }
                 //z lewej dolnej strony
                 if((y>0) && (x<(iloscKwadratow-1)) && (table[x+1][y-1] != -1)){
                     table[x+1][y-1] += 1;
 
-                    let doc = document.getElementById("cell" + (x+1) + (y-1));
+                    let doc = document.getElementById("cell" + (x+1) + "x" + (y-1));
                 }
                 //z prawej dolnej strony
                 if((y<(iloscKwadratow-1)) && (x<(iloscKwadratow-1)) && (table[x+1][y+1] != -1)){
                     table[x+1][y+1] += 1;
 
-                    let doc = document.getElementById("cell" + (x+1) + (y+1));
+                    let doc = document.getElementById("cell" + (x+1) + "x" + (y+1));
                 }
             }
 
@@ -201,7 +200,7 @@
             }
 
             let executed = false;
-            //Pierwsze klikniecie #do poprawy zeby się strona nie realodowała
+            //Pierwsze kliknięcie
             function checkClick(x, y){
                 if(executed == false){
                     if(table[x][y] != 0){
@@ -229,21 +228,23 @@
             function bombCheck(x, y){
                 let something = document.getElementsByClassName("noBomb");
 
-                if(document.getElementById("cell" + x + y).className == "divTableCell noBomb" || document.getElementById("cell" + x + y).className == "divTableCell"){
-                    document.getElementById("cell" + x + y).setAttribute("class", "divTableCell noBomb");
+                if(document.getElementById("cell" + x + "x" + y).className == "divTableCell noBomb" || document.getElementById("cell" + x + "x" + y).className == "divTableCell"){
+                    document.getElementById("cell" + x + "x" + y).setAttribute("class", "divTableCell noBomb");
                 }
 
-                if(something.length >= ((iloscKwadratow*iloscKwadratow) - iloscKwadratow)){
+                if(something.length >= ((iloscKwadratow*iloscKwadratow) - iloscBomb)){
                     let everyBomb = document.getElementsByClassName("divTableCell isBomb");
                     for(let i = 0; i < iloscBomb; i++){
-                        everyBomb[i].setAttribute("style", "background-image: url(images/noboom.png); background-repeat: no-repeat; background-size: cover;")
+                        everyBomb[i].setAttribute("style", "background-image: url(images/noboom.gif); background-repeat: no-repeat; background-size: cover;")
                     }
                     //alert("Zwycięstwo!");
-                    document.getElementById("winmessage").hidden = false;
+                    //document.getElementById("winmessage").hidden = false;
+                    document.getElementById("winmessage").style.color = "green";
+                    blockClick();
                 }
 
                 if(table[x][y] == -1){
-                    document.getElementById("cell" + x + y).setAttribute("style", "background-image: url(images/boom.gif); background-repeat: no-repeat; background-size: cover;");
+                    document.getElementById("cell" + x + "x" + y).setAttribute("style", "background-image: url(images/boom.gif); background-repeat: no-repeat; background-size: cover;");
                     let everyBomb = document.getElementsByClassName("divTableCell isBomb");
 
                     let audio = new Audio("audio/boom.mp3");
@@ -256,6 +257,9 @@
                     }
                     //alert("Porażka :c");
                     document.getElementById("losemessage").hidden = false;
+                    document.getElementById("winmessage").hidden = true;
+                    blockClick();
+
                     setTimeout(function(){
                         for(let i = 0; i < iloscBomb; i++){
                             everyBomb[i].setAttribute("style", "background-image: url(images/smoke.gif); background-repeat: no-repeat; background-size: cover;")
@@ -264,15 +268,15 @@
                 }
                 if(table[x][y] > 0){
                     let numberOfMines = table[x][y];
-                    document.getElementById("cell" + x + y).setAttribute("style", "background-image: url(images/" + numberOfMines + ".png); background-repeat: no-repeat; background-size: cover;");
+                    document.getElementById("cell" + x + "x" + y).setAttribute("style", "background-image: url(images/" + numberOfMines + ".png); background-repeat: no-repeat; background-size: cover;");
                 }
-                if(table[x][y] != -1 && document.getElementById("cell" + x + y).getAttribute("style") == "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;"){
-                    document.getElementById("cell" + x + y).setAttribute("style", "background-image: url(images/0.png); background-repeat: no-repeat; background-size: cover;");
+                if(table[x][y] != -1 && document.getElementById("cell" + x + "x" + y).getAttribute("style") == "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;"){
+                    document.getElementById("cell" + x + "x" + y).setAttribute("style", "background-image: url(images/0.png); background-repeat: no-repeat; background-size: cover;");
 
                     //z lewej strony           
                     if((y>0)){
                         bombCheck((x), (y-1));
-                        let doc = document.getElementById("cell" + x + (y-1));
+                        let doc = document.getElementById("cell" + x + "x"+ (y-1));
 
                         if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
                             doc.classList.add("noBomb");
@@ -281,7 +285,7 @@
                     //z lewej górnej strony
                     if((y>0) && (x>0)){
                         bombCheck((x-1), (y-1));
-                        let doc = document.getElementById("cell" + (x-1) + (y-1));
+                        let doc = document.getElementById("cell" + (x-1) + "x" + (y-1));
 
                         if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
                             doc.classList.add("noBomb");
@@ -290,7 +294,7 @@
                     //z prawej górnej strony
                     if((y<(iloscKwadratow-1)) && (x>0)){
                         bombCheck((x-1), (y+1));
-                        let doc = document.getElementById("cell" + (x-1) + (y+1));
+                        let doc = document.getElementById("cell" + (x-1) + "x" + (y+1));
 
                         if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
                             doc.classList.add("noBomb");
@@ -299,7 +303,7 @@
                     //z prawej strony
                     if((y<(iloscKwadratow-1))){
                         bombCheck((x), (y+1));
-                        let doc = document.getElementById("cell" + x + (y+1));
+                        let doc = document.getElementById("cell" + x + "x" + (y+1));
 
                         if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
                             doc.classList.add("noBomb");
@@ -308,7 +312,7 @@
                     //z góry
                     if((x<(iloscKwadratow-1))){
                         bombCheck((x+1), (y));
-                        let doc = document.getElementById("cell" + (x+1) + (y));
+                        let doc = document.getElementById("cell" + (x+1) + "x" + (y));
                         
                         if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
                             doc.classList.add("noBomb");
@@ -317,7 +321,7 @@
                     //z dołu
                     if((x>0)){
                         bombCheck((x-1), (y));
-                        let doc = document.getElementById("cell" + (x-1) + (y));
+                        let doc = document.getElementById("cell" + (x-1) + "x" + (y));
 
                         if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
                             doc.classList.add("noBomb");
@@ -326,7 +330,7 @@
                     //z lewej dolnej strony
                     if((y>0) && (x<(iloscKwadratow-1))){
                         bombCheck((x+1), (y-1));
-                        let doc = document.getElementById("cell" + (x+1) + (y-1));
+                        let doc = document.getElementById("cell" + (x+1) + "x" + (y-1));
 
                         if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
                             doc.classList.add("noBomb");
@@ -335,7 +339,7 @@
                     //z prawej dolnej strony
                     if((y<(iloscKwadratow-1)) && (x<(iloscKwadratow-1))){
                         bombCheck((x+1), (y+1));
-                        let doc = document.getElementById("cell" + (x+1) + (y+1));
+                        let doc = document.getElementById("cell" + (x+1) + "x" + (y+1));
 
                         if(doc.className != "divTableCell isBomb" || doc.className != "divTableCell noBomb"){
                             doc.classList.add("noBomb");
@@ -353,6 +357,16 @@
                 else{
                     icon.setAttribute("src", "images/musicon.png");
                     musicCheck++;
+                }
+            }
+
+            function blockClick(){
+                if(document.getElementById("losemessage").hidden == false || document.getElementById("winmessage").style.color != "#ffffff"){
+                    for(let i = 0; i < iloscKwadratow; i++){
+                        let toBlock = document.getElementById("tableRowNumber" + i);
+
+                        toBlock.classList.add("disabledCell");
+                    }
                 }
             }
         </script>
