@@ -50,14 +50,15 @@
                     //alert("You pressed button: prawy");
                     let flag = document.getElementById("cell" + x + "x" + y);
                     let audio = new Audio("audio/stick.mp3");
-                    if(flag.getAttribute("style") == "background-image: url(images/flag.gif); background-repeat: no-repeat; background-size: cover;"){
-                        flag.setAttribute("style", "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;");
+
+                    if(flag.getAttribute("style") == "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;"){
+                        flag.setAttribute("style", "background-image: url(images/flag.gif); background-repeat: no-repeat; background-size: cover;");
                         if(musicCheck % 2 == 0){
                             audio.play();
                         }
                     }
-                    else{
-                        flag.setAttribute("style", "background-image: url(images/flag.gif); background-repeat: no-repeat; background-size: cover;");
+                    else if(flag.getAttribute("style") == "background-image: url(images/flag.gif); background-repeat: no-repeat; background-size: cover;"){
+                        flag.setAttribute("style", "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;");
                         if(musicCheck % 2 == 0){
                             audio.play();
                         }
