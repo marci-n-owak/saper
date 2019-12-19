@@ -30,7 +30,33 @@
 	flex: 1;
 }
 .speaker{
-	padding-left: 27vh;
+	padding-left: 7vh;
+}
+#flagIcon{
+	height: 6vh;
+	width: 6vh;
+	float: top;
+	clear: both;
+	flex: 1;
+	margin-left: 5vh;
+}
+.flags{
+	font-size: 3vh;
+	font-family: OCR A Std, monospace;
+	padding-top: 1.5vh;
+}
+#clockIcon{
+	height: 6vh;
+	width: 6vh;
+	float: top;
+	clear: both;
+	flex: 1;
+	margin-left: 5vh;
+}
+.clock{
+	font-size: 3vh;
+	font-family: OCR A Std, monospace;
+	padding-top: 1.5vh;
 }
 .restart{
 	position: relative;

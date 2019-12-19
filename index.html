@@ -9,25 +9,49 @@
     <body oncontextmenu="return false">
         <div class="menu">
             <input class="restart" type="button" value="Restart" id="restartButton" onclick="restartDivButton()">
+            <div><img id="flagIcon" src="images/flag2.gif"></div><div id="flagValue" class="flags">0</div>
+            <div><img id="clockIcon" src="images/clock.png"></div><div id="clockValue" class="clock">0</div>
             <div class="speaker"><img id="musicIcon" src="images/musicon.png" onclick="musicOnOff()"></div>
         </div>
         <div class="submenu">
             <div>Promień pól:
-            <input id="numberIloscKwadratow" type="number" min="3" max="20" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton()">
+            <input id="numberIloscKwadratow" type="number" min="3" max="20" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton(), flagCounter()">
             Ilość bomb:
-            <input id="numberIloscBomb" type="number" min="3" max="399" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton()"></div>
+            <input id="numberIloscBomb" type="number" min="3" max="399" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton(), flagCounter()"></div>
         </div>
         <div class="winmessage" id="winmessage">Zwycięstwo!</div>
         <div class="losemessage" id="losemessage" hidden>Porażka</div>
         <script>
             //Globalne zmienne
-            //let message1 = ""
-            //let message2 = ""
             let iloscKwadratow = 10;
             let iloscBomb = 10;
             let numberIloscBomb = document.getElementById("numberIloscBomb");
             let numberIloscKwadratow = document.getElementById("numberIloscKwadratow");
+            let time = 1;
+            let timeTimer;
+            let timerExecuted = false;
+            let flagCountDown = document.getElementById("flagValue");
+            let flagCountDownPom = iloscBomb;
+            flagCountDown.innerHTML = iloscBomb;
 
+            //Funkcje flagCountera
+            function flagCounter(){
+                flagCountDown.innerHTML = iloscBomb;
+                flagCountDownPom = iloscBomb;
+            }
+            //Funkcje timera
+            function timerStart(){
+                if(timerExecuted == false){
+                    timeTimer = setInterval(function(){ 
+                        document.getElementById("clockValue").innerHTML = time;
+                        time++ 
+                    }, 1000);
+                    timerExecuted = true;
+                }
+            }
+            function timerStop(){
+                clearInterval(timeTimer);
+            }
             //Sprawdzenie poprawnosci wprowadzonych danych
             function checkNumbersValues(){
                 let sqValue = numberIloscKwadratow.value;
@@ -67,12 +91,18 @@
                         if(musicCheck % 2 == 0){
                             audio.play();
                         }
+                        //odejmij od flagi
+                        flagCountDown.innerHTML = flagCountDownPom - 1;
+                        flagCountDownPom--;
                     }
                     else if(flag.getAttribute("style") == "background-image: url(images/flag.gif); background-repeat: no-repeat; background-size: cover;"){
                         flag.setAttribute("style", "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;");
                         if(musicCheck % 2 == 0){
                             audio.play();
                         }
+                        //dodaj do flagi
+                        flagCountDown.innerHTML = flagCountDownPom + 1;
+                        flagCountDownPom++;
                     }
                 }
             }
@@ -181,7 +211,7 @@
                     elementToDelete.parentNode.removeChild(elementToDelete);
                 }
             }
-            //Restart gry
+            //Restart gry jesli pierwszy klik to nie 0
             function restartGame(x, y){
                 removeElement(iloscKwadratow);
                 createArray();
@@ -192,6 +222,7 @@
             //Sprawdzanie pierwszego kliknięcia
             let executed = false;
             function checkClick(x, y){
+                timerStart();
                 if(executed == false){
                     if(table[x][y] != 0){
                         restartGame(x, y);
@@ -199,6 +230,7 @@
                     else{
                         executed = true;
                         bombCheck(x, y);
+                        //timerStart();
                         let audio = new Audio("audio/check.mp3");
                         if(musicCheck % 2 == 0 && table[x][y] != -1){
                             audio.play();
@@ -208,6 +240,7 @@
                 else{
                     executed = true;
                     bombCheck(x, y);
+                    //timerStart();
                     let audio = new Audio("audio/check.mp3");
                     if(musicCheck % 2 == 0 && table[x][y] != -1){
                         audio.play();
@@ -225,6 +258,7 @@
 
                 if(something.length >= ((iloscKwadratow*iloscKwadratow) - iloscBomb)){
                     //Zwyciestwo
+                    timerStop();
                     let everyBomb = document.getElementsByClassName("divTableCell isBomb");
                     for(let i = 0; i < iloscBomb; i++){
                         everyBomb[i].setAttribute("style", "background-image: url(images/noboom.gif); background-repeat: no-repeat; background-size: cover;")
@@ -251,6 +285,7 @@
                     document.getElementById("losemessage").hidden = false;
                     document.getElementById("winmessage").hidden = true;
                     blockClick();
+                    timerStop();
 
                     setTimeout(function(){
                         if(document.getElementById("losemessage").hidden == false){
@@ -366,9 +401,7 @@
                     }
                 }
             }
-
             numberIloscKwadratow.value = iloscKwadratow;
-
             numberIloscBomb.value = iloscBomb;
         </script>
     </body>
