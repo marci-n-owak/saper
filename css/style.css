@@ -3,10 +3,9 @@
 	height: 5vh;
 	width: 5vh;
 	cursor: pointer;
-	/*border: 1px solid black;*/
 	margin: 0.1vh;
 }
-.divTableRow {
+.divTableRow{
 	display: table-row;
 	display: flex;
     margin-left: auto;
@@ -16,7 +15,7 @@
 .disabledCell{
 	pointer-events: none;
 }
-.menu {
+.menu{
 	display: flex;
 	justify-content: center;
 	padding-bottom: 1vh;
@@ -29,6 +28,8 @@
 	float: top;
 	clear: both;
 	flex: 1;
+}
+.speaker{
 	padding-left: 27vh;
 }
 .restart{
@@ -50,6 +51,16 @@
 }
 .restart:hover{
 	background-color: #0087d5;
+}
+.submenu{
+	display: flex;
+	justify-content: center;
+	margin-top: 2vh;
+	font-size: 2.5vh;
+	font-family: OCR A Std, monospace;
+}
+.numbersubmenu{
+	font-size: 2vh;
 }
 .winmessage{
 	text-align: center;

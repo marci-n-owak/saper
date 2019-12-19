@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="css/style.css">
-        <link rel="icon" href="images/mine.png">
+        <link rel="icon" href="images/noboom2.png">
         <title>Saper</title>
     </head>
     <body oncontextmenu="return false">
@@ -11,14 +11,24 @@
             <input class="restart" type="button" value="Restart" id="restartButton" onclick="restartDivButton()">
             <div class="speaker"><img id="musicIcon" src="images/musicon.png" onclick="musicOnOff()"></div>
         </div>
+        <div class="submenu">
+            <div>Promień pól:
+            <input id="numberIloscKwadratow" type="number" min="3" max="20" class="numbersubmenu" onchange="restartDivButton()">
+            Ilość bomb:
+            <input id="numberIloscBomb" type="number" min="5" max="399" class="numbersubmenu" onchange="restartDivButton()"></div>
+        </div>
         <div class="winmessage" id="winmessage">Zwycięstwo!</div>
         <div class="losemessage" id="losemessage" hidden>Porażka :c</div>
         <script>
+            //Globalne zmienne
             let message1 = ""
             let message2 = ""
             let iloscKwadratow = 0;
             let iloscBomb = 0;
+            let numberIloscBomb = document.getElementById("numberIloscBomb");
+            let numberIloscKwadratow = document.getElementById("numberIloscKwadratow");
 
+            //Alerty na start
             function messagesOnStart(){
                 message1 = prompt("Podaj promień tworzenia pól (max 20):", "10");
                 message2 = prompt("Podaj liczbę bomb:", "10");
@@ -26,6 +36,7 @@
                 iloscBomb = parseInt(message2);
             }
             messagesOnStart();
+            //Sprawdzenie poprawnosci wprowadzonych danych
             if(iloscKwadratow >= 20){
                 alert("Za duża liczba promienia pól");
                 messagesOnStart();
@@ -34,9 +45,16 @@
                 alert("Nie można wygenerować więcej bomb niż pól");
                 messagesOnStart();
             }
+            //Funkcja dla przycisku restart
             function restartDivButton(){
                 executed = false;
+
+                iloscBomb = numberIloscBomb.value ;
+                
                 removeElement(iloscKwadratow);
+
+                iloscKwadratow = numberIloscKwadratow.value;
+                
                 createArray();
                 createTable();
                 bombs(iloscBomb);
@@ -44,10 +62,9 @@
                 document.getElementById("winmessage").style.color = "#ffffff";
                 document.getElementById("losemessage").hidden = true;        
             }
-            //Sprawdzanie przycisku
+            //Sprawdzanie przycisku czy prawy
             function buttonCheck(event, x, y){
                 if(event.button == 2){
-                    //alert("You pressed button: prawy");
                     let flag = document.getElementById("cell" + x + "x" + y);
                     let audio = new Audio("audio/stick.mp3");
 
@@ -66,16 +83,13 @@
                 }
             }
             //Tworzenie tabeli w Arrayce
-            //let iloscKwadratow = 10;
-            //let iloscBomb = 20;
             let table = new Array(iloscKwadratow); 
-            
             function createArray(){  
-                for (let i = 0; i < table.length; i++){ 
+                for(let i = 0; i < iloscKwadratow; i++){ 
                     table[i] = new Array(iloscKwadratow); 
                 } 
-                for (let i = 0; i < iloscKwadratow; i++){ 
-                    for (let j = 0; j < iloscKwadratow; j++){ 
+                for(let i = 0; i < iloscKwadratow; i++){ 
+                    for(let j = 0; j < iloscKwadratow; j++){ 
                         table[i][j] = 0; 
                     } 
                 } 
@@ -104,7 +118,6 @@
                 }
             }
             createTable();
-
             //Pętla na ilość generowanych bomb
             function bombs(iloscBomb){
                 for (let i = 0; i < iloscBomb; i++) {
@@ -112,7 +125,6 @@
                 }
             }
             bombs(iloscBomb);
-
             //Generowanie bomb 
             function generate(){
                 let x = Math.floor(Math.random() * iloscKwadratow) + 0;
@@ -133,79 +145,62 @@
                     numbers(x, y);
                 }          
             }
-
             //Tworzenie liczb wokół bomb
             function numbers(x, y){
                 //z lewej strony           
                 if((y>0) && (table[x][y-1] != -1)){
                     table[x][y-1] += 1;
-
-                    let doc = document.getElementById("cell" + x + "x" + (y-1));
                 }
                 //z lewej górnej strony
                 if((y>0) && (x>0) && (table[x-1][y-1] != -1)){
                     table[x-1][y-1] += 1;
-
-                    let doc = document.getElementById("cell" + (x-1) + "x" + (y-1));
                 }
                 //z prawej górnej strony
                 if((y<(iloscKwadratow-1)) && (x>0) && (table[x-1][y+1] != -1)){
                     table[x-1][y+1] += 1;
-
-                    let doc = document.getElementById("cell" + (x-1) + "x" + (y+1));
                 }
                 //z prawej strony
                 if((y<(iloscKwadratow-1)) && (table[x][y+1] != -1)){
                     table[x][y+1] += 1;
-
-                    let doc = document.getElementById("cell" + x + "x" + (y+1));
                 }
                 //z góry
                 if((x<(iloscKwadratow-1)) && (table[x+1][y] != -1)){
                     table[x+1][y] += 1;
-
-                    let doc = document.getElementById("cell" + (x+1) + "x" + (y));
                 }
                 //z dołu
                 if((x>0) && (table[x-1][y] != -1)){
                     table[x-1][y] += 1;
-
-                    let doc = document.getElementById("cell" + (x-1) + "x" + (y));
                 }
                 //z lewej dolnej strony
                 if((y>0) && (x<(iloscKwadratow-1)) && (table[x+1][y-1] != -1)){
                     table[x+1][y-1] += 1;
-
-                    let doc = document.getElementById("cell" + (x+1) + "x" + (y-1));
                 }
                 //z prawej dolnej strony
                 if((y<(iloscKwadratow-1)) && (x<(iloscKwadratow-1)) && (table[x+1][y+1] != -1)){
                     table[x+1][y+1] += 1;
-
-                    let doc = document.getElementById("cell" + (x+1) + "x" + (y+1));
                 }
             }
-
+            //Usuwanie tabeli
             function removeElement(iloscKwadratow){
                 for(let i = 0; i < iloscKwadratow; i++){
                     let elementToDelete = document.getElementById("tableRowNumber" + i);
                     elementToDelete.parentNode.removeChild(elementToDelete);
                 }
             }
-            function restartGame(iloscKwadratow, x, y){
+            //Restart gry
+            function restartGame(x, y){
                 removeElement(iloscKwadratow);
                 createArray();
                 createTable();
                 bombs(iloscBomb);
                 checkClick(x, y);
             }
-
+            //Sprawdzanie pierwszego kliknięcia
             let executed = false;
-            //Pierwsze kliknięcie
             function checkClick(x, y){
                 if(executed == false){
                     if(table[x][y] != 0){
-                        restartGame(iloscKwadratow, x, y);
+                        restartGame(x, y);
                     }
                     else{
                         executed = true;
@@ -230,21 +225,23 @@
                 let something = document.getElementsByClassName("noBomb");
 
                 if(document.getElementById("cell" + x + "x" + y).className == "divTableCell noBomb" || document.getElementById("cell" + x + "x" + y).className == "divTableCell"){
+                    //Przypisywanie wartosci noBomb
                     document.getElementById("cell" + x + "x" + y).setAttribute("class", "divTableCell noBomb");
                 }
 
                 if(something.length >= ((iloscKwadratow*iloscKwadratow) - iloscBomb)){
+                    //Zwyciestwo
                     let everyBomb = document.getElementsByClassName("divTableCell isBomb");
                     for(let i = 0; i < iloscBomb; i++){
                         everyBomb[i].setAttribute("style", "background-image: url(images/noboom.gif); background-repeat: no-repeat; background-size: cover;")
                     }
-                    //alert("Zwycięstwo!");
-                    //document.getElementById("winmessage").hidden = false;
+                    
                     document.getElementById("winmessage").style.color = "green";
                     blockClick();
                 }
 
                 if(table[x][y] == -1){
+                    //Porazka
                     document.getElementById("cell" + x + "x" + y).setAttribute("style", "background-image: url(images/boom.gif); background-repeat: no-repeat; background-size: cover;");
                     let everyBomb = document.getElementsByClassName("divTableCell isBomb");
 
@@ -256,7 +253,7 @@
                     for(let i = 0; i < iloscBomb; i++){
                         everyBomb[i].setAttribute("style", "background-image: url(images/boom.gif); background-repeat: no-repeat; background-size: cover;")
                     }
-                    //alert("Porażka :c");
+                    
                     document.getElementById("losemessage").hidden = false;
                     document.getElementById("winmessage").hidden = true;
                     blockClick();
@@ -268,10 +265,12 @@
                     }, 2000);
                 }
                 if(table[x][y] > 0){
+                    //Wypisywanie liczby
                     let numberOfMines = table[x][y];
                     document.getElementById("cell" + x + "x" + y).setAttribute("style", "background-image: url(images/" + numberOfMines + ".png); background-repeat: no-repeat; background-size: cover;");
                 }
                 if(table[x][y] != -1 && document.getElementById("cell" + x + "x" + y).getAttribute("style") == "background-image: url(images/hidden.png); background-repeat: no-repeat; background-size: cover;"){
+                    //Sprawdzanie liczb wokół bomby
                     document.getElementById("cell" + x + "x" + y).setAttribute("style", "background-image: url(images/0.png); background-repeat: no-repeat; background-size: cover;");
 
                     //z lewej strony           
@@ -348,6 +347,7 @@
                     }
                 }
             }
+            //Wlączenie/wyłączenie dźwięku
             let musicCheck = 0;
             function musicOnOff(){
                 let icon = document.getElementById("musicIcon");
@@ -360,7 +360,7 @@
                     musicCheck++;
                 }
             }
-
+            //Blokada kliknięć po grze
             function blockClick(){
                 if(document.getElementById("losemessage").hidden == false || document.getElementById("winmessage").style.color != "#ffffff"){
                     for(let i = 0; i < iloscKwadratow; i++){
@@ -370,6 +370,10 @@
                     }
                 }
             }
+
+            numberIloscKwadratow.value = iloscKwadratow;
+
+            numberIloscBomb.value = iloscBomb;
         </script>
     </body>
 </html>
