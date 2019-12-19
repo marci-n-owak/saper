@@ -8,13 +8,13 @@
     </head>
     <body oncontextmenu="return false">
         <div class="menu">
-            <input class="restart" type="button" value="Restart" id="restartButton" onclick="restartDivButton()">
+            <input class="restart" type="button" value="Restart" id="restartButton" onclick="restartDivButton(), timerStopResetButton()">
             <div><img id="flagIcon" src="images/flag2.gif"></div><div id="flagValue" class="flags">0</div>
             <div><img id="clockIcon" src="images/clock.png"></div><div id="clockValue" class="clock">0</div>
             <div class="speaker"><img id="musicIcon" src="images/musicon.png" onclick="musicOnOff()"></div>
         </div>
         <div class="submenu">
-            <div>Promień pól:
+            <div>Przekątna pól:
             <input id="numberIloscKwadratow" type="number" min="3" max="20" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton(), flagCounter()">
             Ilość bomb:
             <input id="numberIloscBomb" type="number" min="3" max="399" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton(), flagCounter()"></div>
@@ -39,7 +39,7 @@
                 flagCountDown.innerHTML = iloscBomb;
                 flagCountDownPom = iloscBomb;
             }
-            //Funkcje timera
+            //Funkcje timera do zorbienia
             function timerStart(){
                 if(timerExecuted == false){
                     timeTimer = setInterval(function(){ 
@@ -52,9 +52,27 @@
             function timerStop(){
                 clearInterval(timeTimer);
             }
+            function timerStopResetButton(){
+                timerStop();
+                document.getElementById("clockValue").innerHTML = 0;
+            }
             //Sprawdzenie poprawnosci wprowadzonych danych
             function checkNumbersValues(){
                 let sqValue = numberIloscKwadratow.value;
+
+                if(sqValue > 20){
+                    alert("Maksymalna przekątna pól to 20 kratek");
+                    numberIloscKwadratow.value = numberIloscKwadratow.max;
+                }
+                else if(sqValue < 3){
+                    alert("Minimalna przekątna pól to 3 kratki");
+                    numberIloscKwadratow.value = numberIloscKwadratow.min;
+                }
+                if(numberIloscBomb.value > sqValue + 1){
+                    alert("blad");
+                    numberIloscBomb.value = numberIloscBomb.max;
+                }
+
                 numberIloscBomb.max = (numberIloscKwadratow.value * numberIloscKwadratow.value) - 1;
                 if(numberIloscBomb.value > sqValue * sqValue - 1){ 
                     numberIloscBomb.value = sqValue * sqValue -1;
