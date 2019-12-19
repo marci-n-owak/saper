@@ -13,37 +13,32 @@
         </div>
         <div class="submenu">
             <div>Promień pól:
-            <input id="numberIloscKwadratow" type="number" min="3" max="20" class="numbersubmenu" onchange="restartDivButton()">
+            <input id="numberIloscKwadratow" type="number" min="3" max="20" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton()">
             Ilość bomb:
-            <input id="numberIloscBomb" type="number" min="5" max="399" class="numbersubmenu" onchange="restartDivButton()"></div>
+            <input id="numberIloscBomb" type="number" min="3" max="399" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton()"></div>
         </div>
         <div class="winmessage" id="winmessage">Zwycięstwo!</div>
         <div class="losemessage" id="losemessage" hidden>Porażka :c</div>
         <script>
             //Globalne zmienne
-            let message1 = ""
-            let message2 = ""
-            let iloscKwadratow = 0;
-            let iloscBomb = 0;
+            //let message1 = ""
+            //let message2 = ""
+            let iloscKwadratow = 10;
+            let iloscBomb = 10;
             let numberIloscBomb = document.getElementById("numberIloscBomb");
             let numberIloscKwadratow = document.getElementById("numberIloscKwadratow");
 
-            //Alerty na start
-            function messagesOnStart(){
-                message1 = prompt("Podaj promień tworzenia pól (max 20):", "10");
-                message2 = prompt("Podaj liczbę bomb:", "10");
-                iloscKwadratow = parseInt(message1);
-                iloscBomb = parseInt(message2);
-            }
-            messagesOnStart();
             //Sprawdzenie poprawnosci wprowadzonych danych
-            if(iloscKwadratow >= 20){
-                alert("Za duża liczba promienia pól");
-                messagesOnStart();
-            }
-            if(iloscBomb > (iloscKwadratow * iloscKwadratow)){
-                alert("Nie można wygenerować więcej bomb niż pól");
-                messagesOnStart();
+            function checkNumbersValues(){
+                let sqValue = numberIloscKwadratow.value;
+                numberIloscBomb.max = (numberIloscKwadratow.value * numberIloscKwadratow.value) - 1;
+                if(numberIloscBomb.value > sqValue * sqValue - 1){ 
+                    numberIloscBomb.value = sqValue * sqValue -1;
+                }
+                if(numberIloscKwadratow.value >= 20){
+                    numberIloscBomb.value = sqValue * sqValue -1;
+                }
+                
             }
             //Funkcja dla przycisku restart
             function restartDivButton(){
