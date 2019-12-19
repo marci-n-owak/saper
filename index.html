@@ -18,7 +18,7 @@
             <input id="numberIloscBomb" type="number" min="3" max="399" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton()"></div>
         </div>
         <div class="winmessage" id="winmessage">Zwycięstwo!</div>
-        <div class="losemessage" id="losemessage" hidden>Porażka :c</div>
+        <div class="losemessage" id="losemessage" hidden>Porażka</div>
         <script>
             //Globalne zmienne
             //let message1 = ""
@@ -38,7 +38,6 @@
                 if(numberIloscKwadratow.value >= 20){
                     numberIloscBomb.value = sqValue * sqValue -1;
                 }
-                
             }
             //Funkcja dla przycisku restart
             function restartDivButton(){
@@ -254,10 +253,12 @@
                     blockClick();
 
                     setTimeout(function(){
-                        for(let i = 0; i < iloscBomb; i++){
-                            everyBomb[i].setAttribute("style", "background-image: url(images/smoke.gif); background-repeat: no-repeat; background-size: cover;")
+                        if(document.getElementById("losemessage").hidden == false){
+                            for(let i = 0; i < iloscBomb; i++){
+                                everyBomb[i].setAttribute("style", "background-image: url(images/smoke.gif); background-repeat: no-repeat; background-size: cover;")
+                            }
                         }
-                    }, 2000);
+                    }, 1100);
                 }
                 if(table[x][y] > 0){
                     //Wypisywanie liczby
