@@ -104,3 +104,13 @@
 	font-family: OCR A Std, monospace;
 	color: red;
 }
+footer {
+	position: static;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	font-family: OCR A Std, monospace;
+	color: black;
+	text-align: center;
+	margin-top: 1vh;
+}
