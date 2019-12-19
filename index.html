@@ -15,9 +15,9 @@
         </div>
         <div class="submenu">
             <div>Przekątna pól:
-            <input id="numberIloscKwadratow" type="number" min="3" max="20" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton(), flagCounter()">
+            <input id="numberIloscKwadratow" type="number" min="5" max="20" class="numbersubmenu" onchange="checkNumbersPola(), restartDivButton(), flagCounter()">
             Ilość bomb:
-            <input id="numberIloscBomb" type="number" min="3" max="399" class="numbersubmenu" onchange="checkNumbersValues(), restartDivButton(), flagCounter()"></div>
+            <input id="numberIloscBomb" type="number" min="3" max="20" class="numbersubmenu" onchange="checkNumbersBombs(), restartDivButton(), flagCounter()"></div>
         </div>
         <div class="winmessage" id="winmessage">Zwycięstwo!</div>
         <div class="losemessage" id="losemessage" hidden>Porażka</div>
@@ -55,31 +55,53 @@
             function timerStopResetButton(){
                 timerStop();
                 document.getElementById("clockValue").innerHTML = 0;
+                time = 1;
+                timerExecuted = false;
             }
-            //Sprawdzenie poprawnosci wprowadzonych danych
-            function checkNumbersValues(){
-                let sqValue = numberIloscKwadratow.value;
+            //Sprawdzenie poprawnosci wprowadzonych danych w polu pól
+            function checkNumbersPola(){
+                let iKwadratowVal = numberIloscKwadratow.value;
+                let iBombVal = numberIloscBomb.value;
 
-                if(sqValue > 20){
-                    alert("Maksymalna przekątna pól to 20 kratek");
+                if(iKwadratowVal > 20){
                     numberIloscKwadratow.value = numberIloscKwadratow.max;
+                    numberIloscBomb.value = numberIloscKwadratow.value * 2;
+                    alert("Maksymalna przekątna pól to 20 kratek");
                 }
-                else if(sqValue < 3){
-                    alert("Minimalna przekątna pól to 3 kratki");
+                else if(iKwadratowVal < 5){
                     numberIloscKwadratow.value = numberIloscKwadratow.min;
+                    numberIloscBomb.value = Math.round(iKwadratowVal / 1.5);
+                    alert("Minimalna przekątna pól to 5 kratki");
                 }
-                if(numberIloscBomb.value > sqValue + 1){
-                    alert("blad");
-                    numberIloscBomb.value = numberIloscBomb.max;
+                else if(iKwadratowVal > 5 && iKwadratowVal < 20){
+                    numberIloscBomb.max = numberIloscKwadratow.value * 2;
                 }
 
-                numberIloscBomb.max = (numberIloscKwadratow.value * numberIloscKwadratow.value) - 1;
-                if(numberIloscBomb.value > sqValue * sqValue - 1){ 
-                    numberIloscBomb.value = sqValue * sqValue -1;
+                if(iKwadratowVal * 2 < iBombVal){
+                    numberIloscBomb.value = numberIloscKwadratow.value * 2;
+                    numberIloscBomb.max = numberIloscKwadratow.value * 2;
+                    numberIloscBomb.min = Math.round(iKwadratowVal / 1.5);
                 }
-                if(numberIloscKwadratow.value >= 20){
-                    numberIloscBomb.value = sqValue * sqValue -1;
+                if(iBombVal < Math.round(iKwadratowVal / 1.5)){
+                    numberIloscBomb.value = Math.round(iKwadratowVal / 1.5);
+                    alert("Minimalna ilość bomb to ilość przekątnej pól przez 1.5");
                 }
+                numberIloscBomb.max = numberIloscKwadratow.value * 2;
+            }
+            //Sprawdzenie poprawnosci wprowadzonych danych w polu bomb
+            function checkNumbersBombs(){
+                let iKwadratowVal = numberIloscKwadratow.value;
+                let iBombVal = numberIloscBomb.value;
+
+                if(iBombVal > (iKwadratowVal * 2)){
+                    numberIloscBomb.value = numberIloscKwadratow.value * 2;
+                    alert("Maksymalna ilość bomb to dwukrotność liczby przekątnej pól");
+                }
+                else if(iBombVal < Math.round(iKwadratowVal / 1.5)){
+                    numberIloscBomb.value = Math.round(iKwadratowVal / 1.5);
+                    alert("Minimalna ilość bomb to ilość przekątnej pól przez 1.5");
+                }
+                numberIloscBomb.max = numberIloscKwadratow.value * 2;
             }
             //Funkcja dla przycisku restart
             function restartDivButton(){
