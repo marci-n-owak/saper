@@ -65,8 +65,9 @@
                 let iBombVal = numberIloscBomb.value;
 
                 if(iKwadratowVal > 20){
+                    numberIloscBomb.value = 20 * 2;
                     numberIloscKwadratow.value = numberIloscKwadratow.max;
-                    numberIloscBomb.value = numberIloscKwadratow.value * 2;
+                    //numberIloscBomb.value = 20 * 2;
                     alert("Maksymalna przekątna pól to 20 kratek");
                 }
                 else if(iKwadratowVal < 5){
@@ -77,13 +78,14 @@
                 else if(iKwadratowVal > 5 && iKwadratowVal < 20){
                     numberIloscBomb.max = numberIloscKwadratow.value * 2;
                 }
-
-                if(iKwadratowVal * 2 < iBombVal){
+                
+                if(iKwadratowVal * 2 < iBombVal && iKwadratowVal <= 20){
                     numberIloscBomb.value = numberIloscKwadratow.value * 2;
                     numberIloscBomb.max = numberIloscKwadratow.value * 2;
                     numberIloscBomb.min = Math.round(iKwadratowVal / 1.5);
                 }
-                if(iBombVal < Math.round(iKwadratowVal / 1.5)){
+
+                if(iBombVal < Math.round(iKwadratowVal / 1.5 && iKwadratowVal <= 20)){
                     numberIloscBomb.value = Math.round(iKwadratowVal / 1.5);
                     alert("Minimalna ilość bomb to ilość przekątnej pól przez 1.5");
                 }
