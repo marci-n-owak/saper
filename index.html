@@ -121,11 +121,13 @@
                 bombs(iloscBomb);
                 document.getElementById("winmessage").hidden = false;
                 document.getElementById("winmessage").style.color = "#ffffff";
-                document.getElementById("losemessage").hidden = true;        
+                document.getElementById("losemessage").hidden = true;    
+
+                flagCounter();    
             }
             //Sprawdzanie przycisku czy prawy
             function buttonCheck(event, x, y){
-                if(event.button == 2){
+                if(event.button == 2 && executed == true){
                     let flag = document.getElementById("cell" + x + "x" + y);
                     let audio = new Audio("audio/stick.mp3");
 
