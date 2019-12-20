@@ -53,10 +53,10 @@
                     let getNumbersHS = newHS.match(/\d+/g).map(Number);
                     let timeNumberHS = getNumbersHS[3];
                     //alert(thistumber);
-                    if(getNumbersHS.value > czasHS.innerHTML){
-                        alert("dziala");
+                    if(parseInt(getNumbersHS) > parseInt(czasHS.innerHTML)){
+                        //alert("dziala");
                         //update 
-                        lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
+                        lastHighScore.innerHTML.replace(("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + "4" + " sekund."), ("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund."));
                     }
                     //let thisHS = lastHighScore.innerHTML;
                     //lastHighScore.innerHTML.replace(newHS, "COS");
