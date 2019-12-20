@@ -91,6 +91,15 @@
 	font-size: 2.3vh;
 	font-family: OCR A Std, monospace;
 }
+.highscore{
+	position: fixed;
+	color: black;
+	left: 0;
+	padding-left: 5vh;
+	font-size: 1.5vh;
+	font-family: OCR A Std, monospace;
+	width: 15vw;
+}
 .numbersubmenu{
 	font-size: 2vh;
 }

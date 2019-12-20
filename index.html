@@ -13,6 +13,7 @@
             <div><img id="flagIcon" src="images/flag2.gif"></div><div id="flagValue" class="flags">0</div>
             <div><img id="clockIcon" src="images/clock.png"></div><div id="clockValue" class="clock">0</div><span class="seconds">s</span>
             <div class="speaker"><img id="musicIcon" src="images/musicon.png" onclick="musicOnOff()"></div>
+            <div class="highscore"><span style="font-size: 2vh">Rekordy:</span><br><span id="lastHighScore"></span></div>
         </div>
         <div class="submenu">
             <div>Przekątna pól:
@@ -21,7 +22,7 @@
             <input id="numberIloscBomb" type="number" min="3" max="20" class="numbersubmenu" onchange="checkNumbersBombs(), restartDivButton(), flagCounter()"></div>
         </div>
         <div class="winmessage" id="winmessage">Zwycięstwo!</div>
-        <div class="losemessage" id="losemessage" hidden>Porażka</div>
+        <div class="losemessage" id="losemessage" hidden>Porażka</div> 
         <script>
             //Globalne zmienne
             let iloscKwadratow = 10;
@@ -35,6 +36,24 @@
             let flagCountDownPom = iloscBomb;
             flagCountDown.innerHTML = iloscBomb;
 
+            //Dodanie wyników
+            function addHighScore(){
+                let lastHighScore = document.getElementById("lastHighScore");
+                let iloscKwadratowHS = document.getElementById("numberIloscKwadratow");
+                let iloscBombHS = document.getElementById("numberIloscBomb");
+                let czasHS = document.getElementById("clockValue");
+
+                lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
+
+                /* do zrobienia - jesli byla taka plansza i bomby
+                if(lastHighScore.innerHTML.includes("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value)){
+                    lastHighScore.innerHTML.replace("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>", '');
+                }
+                else{
+                    lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
+                }
+                */
+            }
             //Funkcje flagCountera
             function flagCounter(){
                 flagCountDown.innerHTML = iloscBomb;
@@ -311,6 +330,8 @@
                     
                     document.getElementById("winmessage").style.color = "green";
                     blockClick();
+
+                    addHighScore();
                 }
 
                 if(table[x][y] == -1){
