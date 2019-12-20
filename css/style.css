@@ -100,6 +100,12 @@
 	font-family: OCR A Std, monospace;
 	width: 15vw;
 }
+/* Jesli width > height */
+@media screen and (orientation:portrait) {
+    .highscore{
+		display: none;
+	}
+}
 .numbersubmenu{
 	font-size: 2vh;
 }
