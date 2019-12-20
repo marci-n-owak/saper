@@ -30,7 +30,7 @@
 	flex: 1;
 }
 .speaker{
-	padding-left: 7vh;
+	padding-left: 4vh;
 }
 #flagIcon{
 	height: 6vh;
@@ -38,7 +38,7 @@
 	float: top;
 	clear: both;
 	flex: 1;
-	margin-left: 5vh;
+	margin-left: 4vh;
 }
 .flags{
 	font-size: 3vh;
@@ -51,9 +51,15 @@
 	float: top;
 	clear: both;
 	flex: 1;
-	margin-left: 5vh;
+	margin-left: 4vh;
 }
 .clock{
+	font-size: 3vh;
+	font-family: OCR A Std, monospace;
+	padding-top: 1.5vh;
+}
+.seconds{
+	clear: both;
 	font-size: 3vh;
 	font-family: OCR A Std, monospace;
 	padding-top: 1.5vh;
