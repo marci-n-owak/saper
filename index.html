@@ -43,16 +43,28 @@
                 let iloscBombHS = document.getElementById("numberIloscBomb");
                 let czasHS = document.getElementById("clockValue");
 
-                lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
+                //lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
 
-                /* do zrobienia - jesli byla taka plansza i bomby
+                // do zrobienia - jesli byla taka plansza i bomby
                 if(lastHighScore.innerHTML.includes("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value)){
-                    lastHighScore.innerHTML.replace("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>", '');
+                    //alert("hej");
+                    
+                    let newHS = "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund.";
+                    let getNumbersHS = newHS.match(/\d+/g).map(Number);
+                    let timeNumberHS = getNumbersHS[3];
+                    //alert(thistumber);
+                    if(getNumbersHS.value > czasHS.innerHTML){
+                        alert("dziala");
+                        //update 
+                        lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
+                    }
+                    //let thisHS = lastHighScore.innerHTML;
+                    //lastHighScore.innerHTML.replace(newHS, "COS");
                 }
                 else{
                     lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
                 }
-                */
+                
             }
             //Funkcje flagCountera
             function flagCounter(){
