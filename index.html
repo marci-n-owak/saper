@@ -6,7 +6,7 @@
         <link rel="icon" href="images/noboom2.png">
         <title>Saper</title>
     </head>
-    <body oncontextmenu="return false">
+    <body oncontextmenu="return false" onload="cookieScore()">
         <footer>© Marcin Nowak</footer>
         <div class="menu">
             <input class="restart" type="button" value="Restart" id="restartButton" onclick="restartDivButton(), timerStopResetButton()">
@@ -38,6 +38,14 @@
             let highScroeArray = [""];
             let highScoreCounter = 0;
 
+            function cookieScore(){
+                if(document.cookie.includes("Na")){
+                    lastHighScore.innerHTML = document.cookie;
+                    highScoreCounter = lastHighScore.innerHTML.match(/<br>/gi);
+                    highScoreCounter = highScoreCounter.length + 1;
+                    highScroeArray = lastHighScore.innerHTML.split("<br>");
+                }
+            }
             //Dodanie wyników
             function addHighScore(){
                 let lastHighScore = document.getElementById("lastHighScore");
@@ -63,6 +71,8 @@
 
                                 let arrayJoin = highScroeArray.join("<br>");
                                 lastHighScore.innerHTML = arrayJoin;
+
+                                document.cookie = arrayJoin;  
                             }
                         }
                     }
@@ -75,7 +85,9 @@
                     highScoreCounter++;
 
                     let arrayJoin = highScroeArray.join("<br>");
-                    lastHighScore.innerHTML = arrayJoin;                    
+                    lastHighScore.innerHTML = arrayJoin;    
+
+                    document.cookie = arrayJoin;              
                 }
             }
             //Funkcje flagCountera
