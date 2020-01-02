@@ -35,6 +35,8 @@
             let flagCountDown = document.getElementById("flagValue");
             let flagCountDownPom = iloscBomb;
             flagCountDown.innerHTML = iloscBomb;
+            let highScroeArray = [""];
+            let highScoreCounter = 0;
 
             //Dodanie wyników
             function addHighScore(){
@@ -43,28 +45,38 @@
                 let iloscBombHS = document.getElementById("numberIloscBomb");
                 let czasHS = document.getElementById("clockValue");
 
-                //lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
-
-                // do zrobienia - jesli byla taka plansza i bomby
                 if(lastHighScore.innerHTML.includes("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value)){
-                    //alert("hej");
-                    
-                    let newHS = "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund.";
-                    let getNumbersHS = newHS.match(/\d+/g).map(Number);
-                    let timeNumberHS = getNumbersHS[3];
-                    //alert(thistumber);
-                    if(parseInt(getNumbersHS) > parseInt(czasHS.innerHTML)){
-                        //alert("dziala");
-                        //update 
-                        lastHighScore.innerHTML.replace(("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + "4" + " sekund."), ("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund."));
+                    for(let i = 0; highScroeArray.length > i; i++){
+                        if(highScroeArray[i].includes("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value)){
+                            
+                            let oldHS = highScroeArray[i];
+                            
+                            let getNumbersHS = oldHS.match(/\d+/g).map(Number);
+                            let timeNumberHS = getNumbersHS[3];
+                            //alert(thistumber);
+                            if(parseInt(timeNumberHS) > parseInt(czasHS.innerHTML)){
+                                //alert(timeNumberHS + " jest wieksze od " + czasHS.innerHTML);
+                                delete highScroeArray[i];
+                                let newHS = "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund.";
+
+                                highScroeArray[i] = newHS;
+
+                                let arrayJoin = highScroeArray.join("<br>");
+                                lastHighScore.innerHTML = arrayJoin;
+                            }
+                        }
                     }
-                    //let thisHS = lastHighScore.innerHTML;
-                    //lastHighScore.innerHTML.replace(newHS, "COS");
                 }
                 else{
-                    lastHighScore.innerHTML = lastHighScore.innerHTML + "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
+                    let newHS = "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund.";
+
+                    highScroeArray[highScoreCounter] = newHS;
+
+                    highScoreCounter++;
+
+                    let arrayJoin = highScroeArray.join("<br>");
+                    lastHighScore.innerHTML = arrayJoin;                    
                 }
-                
             }
             //Funkcje flagCountera
             function flagCounter(){
