@@ -41,9 +41,11 @@
             function cookieScore(){
                 if(document.cookie.includes("Na")){
                     lastHighScore.innerHTML = document.cookie;
-                    highScoreCounter = lastHighScore.innerHTML.match(/<br>/gi);
-                    highScoreCounter = highScoreCounter.length + 1;
-                    highScroeArray = lastHighScore.innerHTML.split("<br>");
+                    if(document.cookie.includes("<br>")){
+                        highScoreCounter = lastHighScore.innerHTML.match(/<br>/gi);
+                        highScoreCounter = highScoreCounter.length + 1;
+                        highScroeArray = lastHighScore.innerHTML.split("<br>");
+                    }
                 }
             }
             //Dodanie wyników
