@@ -35,22 +35,28 @@
             let flagCountDown = document.getElementById("flagValue");
             let flagCountDownPom = iloscBomb;
             flagCountDown.innerHTML = iloscBomb;
-            let highScroeArray = [""];
+            let highScoreArray = [""];
             let highScoreCounter = 0;
 
             function cookieScore(){
-                if(document.cookie.includes("Na")){
-                    lastHighScore.innerHTML = document.cookie;
-                    if(document.cookie.includes("<br>")){
+                //if(document.cookie.includes("Na")){
+                    
+                    if(document.cookie.includes("<br>") && document.cookie.includes("Na")){
+                        lastHighScore.innerHTML = document.cookie;
                         highScoreCounter = lastHighScore.innerHTML.match(/<br>/gi);
                         highScoreCounter = highScoreCounter.length + 1;
-                        highScroeArray = lastHighScore.innerHTML.split("<br>");
+                        highScoreArray = lastHighScore.innerHTML.split("<br>");
+                    }
+                    else if(!document.cookie.includes("<br>")){
+                        lastHighScore.innerHTML = document.cookie;
+                        highScoreArray[highScoreCounter] = lastHighScore.innerHTML;
+                        highScoreCounter = 1;
                     }
                     else{
                         highScoreCounter = 1;
                     }
                 }
-            }
+            //}
             //Dodanie wyników
             function addHighScore(){
                 let lastHighScore = document.getElementById("lastHighScore");
@@ -59,22 +65,20 @@
                 let czasHS = document.getElementById("clockValue");
 
                 if(lastHighScore.innerHTML.includes("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value)){
-                    for(let i = 0; highScroeArray.length > i; i++){
-                        if(highScroeArray[i].includes("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value)){
-                            
-                            let oldHS = highScroeArray[i];
+                    for(let i = 0; highScoreArray.length > i; i++){
+                        if(highScoreArray[i].includes("Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value)){
+                            let oldHS = highScoreArray[i];
                             
                             let getNumbersHS = oldHS.match(/\d+/g).map(Number);
                             let timeNumberHS = getNumbersHS[3];
-                            //alert(thistumber);
+
                             if(parseInt(timeNumberHS) > parseInt(czasHS.innerHTML)){
-                                //alert(timeNumberHS + " jest wieksze od " + czasHS.innerHTML);
-                                delete highScroeArray[i];
+                                delete highScoreArray[i];
                                 let newHS = "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund.";
 
-                                highScroeArray[i] = newHS;
+                                highScoreArray[i] = newHS;
 
-                                let arrayJoin = highScroeArray.join("<br>");
+                                let arrayJoin = highScoreArray.join("<br>");
                                 lastHighScore.innerHTML = arrayJoin;
 
                                 document.cookie = arrayJoin;  
@@ -82,17 +86,28 @@
                         }
                     }
                 }
-                else{
+                else if(lastHighScore.innerHTML.includes("<br>")){
                     let newHS = "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund.";
 
-                    highScroeArray[highScoreCounter] = newHS;
+                    highScoreArray[highScoreCounter - 1] = newHS;
 
                     highScoreCounter++;
 
-                    let arrayJoin = highScroeArray.join("<br>");
+                    let arrayJoin = highScoreArray.join("<br>");
                     lastHighScore.innerHTML = arrayJoin;    
 
                     document.cookie = arrayJoin;              
+                }
+                else{
+                    let newHS = "Na planszy " + iloscKwadratowHS.value + "x" + iloscKwadratowHS.value + " z " + iloscBombHS.value + " bombami w " + czasHS.innerHTML + " sekund." + "<br>";
+
+                    highScoreArray = newHS;
+
+                    highScoreCounter++; 
+
+                    lastHighScore.innerHTML = highScoreArray;
+
+                    document.cookie = lastHighScore.innerHTML;
                 }
             }
             //Funkcje flagCountera
